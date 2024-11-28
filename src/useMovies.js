@@ -15,7 +15,7 @@ export function useMovies(query, handleCloseMovies) {
         setIsLoading(true)
         setError("");
         query==="" ? res = await fetch(
-          `http://www.omdbapi.com/?s=movie&apikey=e4f7cc5&s=Inception`,
+          'https://www.omdbapi.com/?apikey=e4f7cc5&s=Inception',
           { signal: controller.signal }
         ):
         res = await fetch(
