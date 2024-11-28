@@ -24,3 +24,5 @@ yarn-error.log*
 Appp.js*
 app-v1.js*
 starRevisit.js*
+
+.vercel

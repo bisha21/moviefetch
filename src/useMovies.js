@@ -6,15 +6,14 @@ export function useMovies(query, handleCloseMovies) {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // callBack?.();
     const controller = new AbortController(); // Define controller outside the fetchMovies function
 
     async function fetchMovies() {
       try {
-        setIsLoading(true)
+        setIsLoading(true);
         setError("");
         const res = await fetch(
-          `http://www.omdbapi.com/?s=movie&apikey=e4f7cc5&s=${query}`,
+          `https://www.omdbapi.com/?s=movie&apikey=e4f7cc5&s=${query}`,
           { signal: controller.signal }
         );
         if (!res.ok) {
@@ -30,17 +29,20 @@ export function useMovies(query, handleCloseMovies) {
         console.error("Error fetching movies:", error);
         setError(error.message);
       } finally {
-        setIsLoading(true);
+        setIsLoading(false); // Set to false once loading is done
       }
     }
-    handleCloseMovies();
-        fetchMovies();
+
+    if (query) {
+      handleCloseMovies(); // Only call when necessary (when query changes)
+      fetchMovies();
+    }
 
     // Return a cleanup function to abort the fetch when component unmounts or when the query changes
     return () => {
       controller.abort();
     };
-  }, [query]);
+  }, [query, handleCloseMovies]); // Dependency on `query` to trigger effect on query change
 
   return { movies, error, isLoading };
 }
